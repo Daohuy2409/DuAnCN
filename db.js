@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { createClient } from "@supabase/supabase-js";
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
+const supabaseUrl = 'https://wdohfulehighqhskimgp.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Indkb2hmdWxlaGlnaHFoc2tpbWdwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcwMDY1MDg4MywiZXhwIjoyMDE2MjI2ODgzfQ.Nhv6XCrI4zobnFkN1yHX8bc_n1qXF5d2fZLpk9NSE2M';
 const supabase = createClient(supabaseUrl, supabaseKey);
 async function getClassList(username) {
     try {
