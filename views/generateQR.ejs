@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport"
+		content="width=device-width, 
+						initial-scale=1.0" />
+	<title>QR Code Generator</title>
+	<link href="/generateQR.css" type="text/css" rel="stylesheet">
+
+	<script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+	<script src='https://html2canvas.hertzen.com/dist/html2canvas.min.js'></script>
+</head>
+
+<body>
+	<header>
+		<h1>Tạo mã QR code</h1>
+	</header>
+	
+	<main>
+		
+		<form action="/" id="qr-form">
+			<label for="MMH">Chọn mã môn học</label>
+  			<select id="MMH" name="MMH">
+    			<% MMH.forEach(function(option) { %>
+      				<option value="<%= option %>"><%= option %></option>
+    			<% }); %>
+  			</select>
+			<br>
+            <label for="time">Chọn tuần học:</label>
+			<select id="time">
+				<option value="Tuan_1">Tuần 1</option>
+				<option value="Tuan_2">Tuần 2</option>
+				<option value="Tuan_3">Tuần 3</option>
+				<option value="Tuan_4">Tuần 4</option>
+				<option value="Tuan_5">Tuần 5</option>
+			</select><br>
+			<label for="timeToAttend">Thời gian điểm danh:</label>
+			<select id="timeToAttend">
+				<option value="5">5 phút</option>
+				<option value="10">10 phút</option>
+				<option value="15">15 phút</option>
+			</select><br><br>
+			<div id="submit">
+				<input type="submit" onclick="on()" value="Generate QR Code"/>
+			</div>
+            
+		</form><br />
+		
+		<nav class="hide">
+			<div class="toggle_menu">
+				<ion-icon name="menu-outline"></ion-icon>
+			</div>
+			<ul class="menu">
+				<li><a href="/teacher/export">
+					<ion-icon name="cloud-download-outline"></ion-icon>
+					Export excel file
+				</a></li>
+				<li><a href="/logout" class="logout">
+					<ion-icon name="exit-outline"></ion-icon>
+					Log out
+				</a></li>
+			</ul>
+		</nav>
+		
+	</main>
+	<div id="overlay" onclick="off()">
+		<div id="qr-code"></div>
+	</div>
+</body>
+<script>
+	function on() {
+  		document.getElementById("overlay").style.display = "block";
+	}
+
+	function off() {
+  		document.getElementById("overlay").style.display = "none";
+	}
+
+	const nav = document.querySelector('nav');
+	const toggle_menu = document.querySelector('.toggle_menu');
+	
+	toggle_menu.onclick = function() {
+		nav.classList.toggle('hide');
+	}
+</script>
+<script type="module">
+	import axios from 'https://cdn.jsdelivr.net/npm/axios@1.5.1/+esm'
+	
+	let MMH = document.getElementById("MMH");
+    let time = document.getElementById("time");
+	let qrGenerationForm = document.getElementById("qr-form");
+	let qrCode;
+	
+	function generateQrCode(qrContent) {
+	return new QRCode("qr-code", {
+		text: qrContent,
+		width: 500,
+		height: 500,
+		colorDark: "#000000",
+		colorLight: "#ffffff",
+		correctLevel: QRCode.CorrectLevel.H,
+	});
+	}
+	let attendTime = parseInt(document.getElementById("timeToAttend").value);
+
+	// Event listener for form submit event
+	qrGenerationForm.addEventListener("submit", function (event) {
+	    // Prevent form submission
+	    event.preventDefault();
+		const currentDate = new Date();
+		const endTime = new Date(currentDate.getTime() + (attendTime * 60 * 1000));
+	    let qrContent = MMH.value + " " + time.value + " " + endTime;
+	    if (qrCode == null) {
+		// Generate code initially
+		    qrCode = generateQrCode(qrContent);
+	    } else {
+		    // If code already generated then make 
+		    // again using same object
+		    qrCode.makeCode(qrContent);
+	    }
+		//gửi thông tin về server để lưu dữ liệu mã qr
+		html2canvas(document.querySelector('#qr-code')).then(canvas => {
+			const imgData = canvas.toDataURL('image/png');
+    		axios.post('http://localhost:3000/teacher/save_image', {image: imgData, lesson: MMH.value, time: time.value,timeToAttend: attendTime})
+  			.then((response) => {
+    			console.log('Hình ảnh đã được lưu trên máy chủ:', response.data.filePath);
+  			})
+  			.catch((error) => {
+    			console.error('Lỗi khi gửi hình ảnh lên máy chủ:', error);
+  			});
+		});
+	});
+</script>
+
+</html>

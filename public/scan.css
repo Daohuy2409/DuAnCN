@@ -1,0 +1,100 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+header {
+    font-family: 'Times New Roman', Times, serif;
+    text-align: center;
+}
+body {
+    font-family: "Poppins", sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+}
+#scanQR {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#reader {
+    
+    margin: 20px auto;
+}
+nav {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 200px;
+    height: 10%;
+    background: white;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: ease-in-out 0.5s;
+    border-radius: 0 0 10px 10px;
+}
+nav.hide {
+    width: 0;
+    
+}
+nav ul {
+    width: 100%;
+    list-style: none;
+    overflow: hidden;
+    padding-left: 0px;
+}
+
+nav ul li a {
+    width: 100%;
+    
+    color: black;
+    font-size: 1.1em;
+    text-decoration: none;
+    justify-content:start ;
+    align-items: center;
+    transition: linear 0.5s;
+    display: inline-flex;
+    
+    padding: 1px;
+}
+nav ul li a ion-icon {
+    margin: 0 4px;
+    color: black;
+    font-size: 1.1em;
+    transition: linear 0.2s;
+}
+
+nav ul li a:hover {
+    background: rgb(223, 221, 221)
+}
+
+
+
+nav .toggle_menu {
+    position: absolute;
+    top: 0px;
+    right: 0;
+    width: 45.6px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    border-radius: 50%;
+    cursor: pointer;
+    transition: linear 0.2s;
+}
+nav .toggle_menu ion-icon {
+    color: black;
+    font-size: 1.2em;
+    transition: linear 0.2s;
+}
+nav .toggle_menu:hover {
+    background: white;
+}

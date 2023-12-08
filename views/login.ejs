@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link href="/login.css" type="text/css" rel="stylesheet">
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+  </head>
+  <body>
+    <main class="box">
+      <form action="/login/login_" method="POST" class="form">
+        <h2>Đăng nhập</h2>
+        <div class="username">
+          <input type="text" name="username" placeholder="Username" required/>
+          <ion-icon name="person"></ion-icon>
+        </div>
+        <div class="password">
+          <input type="password" name="password" placeholder="Password" required/>
+          <ion-icon name="lock-closed"></ion-icon>
+        </div>
+        <div class="choose">
+          <p>Bạn là:</p>
+          <input name="user" type="radio" id="teacher" value="teacher" required>
+          <label for="teacher">Giáo viên</label>
+          <input name="user" type="radio" id="student" value="student">
+          <label for="student">Học sinh</label>
+          
+        </div>
+        <div class="btn-box">
+          <button type="submit">Login</button>
+        </div>
+        
+      </form>
+    </main>
+  </body>
+</html>
+

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="/scan.css" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+</head>
+<body>
+  <header>
+    <h1>Điểm danh bằng QR code</h1>
+  </header>
+  
+
+  <nav class="hide">
+    <div class="toggle_menu">
+      <ion-icon name="menu-outline"></ion-icon>
+    </div>
+    <ul class="menu">
+      <li><a href="/logout" class="logout">
+        <ion-icon name="exit-outline"></ion-icon>
+        Log out
+      </a></li>
+    </ul>
+  </nav>
+  <main id="scanQR">
+    <div style="width:500px;" id="reader"></div>
+  </main>
+  
+  <script>
+    const nav = document.querySelector('nav');
+	  const toggle_menu = document.querySelector('.toggle_menu');
+	
+	  toggle_menu.onclick = function() {
+		  nav.classList.toggle('hide');
+	  }
+  </script>
+  <script type="module">
+    import axios from 'https://cdn.jsdelivr.net/npm/axios@1.5.1/+esm'
+
+    var html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
+    var checksend = false;
+    
+    function onScanSuccess(qrCodeMessage) {
+      
+      let substr = qrCodeMessage.split(" ");
+      const dataToSend = {
+        MMH: substr[0],
+        time: substr[1],
+        endTime: substr.slice(2)
+      };
+      
+      if (!checksend) {
+        axios.post('http://localhost:3000/student/send-data', dataToSend)
+        .then(function (response) {
+          alert(response.data);
+          checksend = true;
+        })
+        .catch(function (error) {
+          console.error('Error:', error);
+        });
+      }
+    }
+    function onScanError(errorMessage) {
+      throw errorMessage;
+    }
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+    
+  </script>
+</body>
+
+</html>
